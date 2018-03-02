@@ -1,14 +1,10 @@
 library(shiny)
 
 shinyServer(function(input, output) {
-  
-  
   output$dynamicselect <- renderUI({
-    
     selectInput("select1", "Wybierz partie",
                 choices = 1:input$slide1)
   })
-  
   
   v <- reactiveValues(data = NULL)
   
@@ -24,11 +20,7 @@ shinyServer(function(input, output) {
   
   output$table1 <- renderTable({
     a()
-    
-    
   })
-  
-  
 })
 
 

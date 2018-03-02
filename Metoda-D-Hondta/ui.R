@@ -2,10 +2,7 @@ library(shiny)
 
 shinyUI(fluidPage(
   
-  
   titlePanel("Metoda D'Hondta"),
-  
-  
   sidebarLayout(
     sidebarPanel("Wybierz liczbę partii",
                  sliderInput("slide1", "Wybierz liczbę partii",
@@ -14,11 +11,8 @@ shinyUI(fluidPage(
                  textInput("text1", "wprowadź sondaż", 0.37),
                  actionButton("act", "zaktualizuj")
     ),
-    
-    
-    mainPanel("ss",
+    mainPanel("",
               tableOutput("table1")
-              
     )
   )
 ))
