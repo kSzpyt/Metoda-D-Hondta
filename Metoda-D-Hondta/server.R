@@ -40,7 +40,7 @@ shinyServer(function(input, output) {
   boolvec <- sapply(v$data, function(x){# true false aby odrzucić 
     if(x<0.05)#sondaże za małe
     {
-       y <- FALSE
+      y <- FALSE
      }
       else
       {
@@ -55,20 +55,21 @@ shinyServer(function(input, output) {
          y <- FALSE
       }
         else
-      {
-         y <- TRUE
-      }
+       {
+                y <- TRUE
+     }
      })
-    sounding <- sounding[boolvec2]
+    sounding <- sounding[boolvec]
     
     sounding <- rep(sounding * input$votes_count, times = 460)
-    #mat <- matrix(sounding, ncol = input$slide1, byrow = TRUE)
-    #dfma <- as.data.frame(mat)
-    #divvec <- 1:460
-    #dfma <- dfma/divvec
-    #o <- order
-    #inv <- c(1:input$slide1*460)
-    return(table(sounding))
+    mat <- matrix(sounding, ncol = input$slide1, byrow = TRUE)
+    dfma <- as.data.frame(mat)
+    divvec <- 1:460
+    dfma <- dfma/divvec
+    o <- order
+    inv <- c(1:input$slide1*460)
+    tt <- table(findInterval(dfma, inv))
+    return(table(tt))
   })
 })
 
