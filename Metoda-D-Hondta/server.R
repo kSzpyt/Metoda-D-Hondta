@@ -21,6 +21,55 @@ shinyServer(function(input, output) {
   output$table1 <- renderTable({
     a()
   })
+  
+  output$sumvotes <- renderText({
+      if(sum(a()[,2])>1)
+      {
+        x <- paste0(100 * sum(a()[,2]), "%"
+                    , " Suma sondaży nie może przekraczać 100%")
+      }
+      else
+      {
+        x <- paste0(100 * sum(a()[,2]), "%" 
+                    , " procent głosów. Do rozdysponowania między partie: "
+                    , 100 * (1 - sum(a()[,2])), "%")
+      }
+    })
+  
+  output$votes <- renderTable({
+  boolvec <- sapply(v$data, function(x){# true false aby odrzucić 
+    if(x<0.05)#sondaże za małe
+    {
+       y <- FALSE
+     }
+      else
+      {
+         y <- TRUE
+       }
+     })
+     sounding <- v$data[boolvec]#odrzucamy <0.05
+     sounding <- sapply(sounding, function(x) rnorm(1, x, 0.1*x))#uwzględniamy błąd
+     boolvec2 <- sapply(sounding, function(x){# true false aby odrzucić 
+      if(x<0.05)#sondaże za małe
+      {
+         y <- FALSE
+      }
+        else
+      {
+         y <- TRUE
+      }
+     })
+    sounding <- sounding[boolvec2]
+    
+    sounding <- rep(sounding * input$votes_count, times = 460)
+    #mat <- matrix(sounding, ncol = input$slide1, byrow = TRUE)
+    #dfma <- as.data.frame(mat)
+    #divvec <- 1:460
+    #dfma <- dfma/divvec
+    #o <- order
+    #inv <- c(1:input$slide1*460)
+    return(table(sounding))
+  })
 })
 
 

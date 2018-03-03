@@ -9,10 +9,15 @@ shinyUI(fluidPage(
                              2, 10, 3),
                  uiOutput("dynamicselect"),
                  textInput("text1", "wprowadź sondaż", 0.37),
-                 actionButton("act", "zaktualizuj")
+                 actionButton("act", "zaktualizuj"),
+                 sliderInput("votes_count", "podaj liczbę głosów",
+                             min=1000, max=10^6, value = 1000)
     ),
     mainPanel("",
-              tableOutput("table1")
+              tableOutput("table1"),
+              textOutput("sumvotes"),
+              tableOutput("votes")
+              
     )
   )
 ))
