@@ -66,9 +66,9 @@ shinyServer(function(input, output) {
     dfma <- as.data.frame(mat)
     divvec <- 1:460
     dfma <- dfma/divvec
-    o <- order
+    o <- order(dfma, decreasing = TRUE)[1:460]
     inv <- c(1:input$slide1*460)
-    tt <- table(findInterval(dfma, inv))
+    tt <- findInterval(o, inv)
     return(table(tt))
   })
 })
