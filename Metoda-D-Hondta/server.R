@@ -6,7 +6,7 @@ shinyServer(function(input, output) {
                 choices = 1:input$slide1)
   })
   
-  v <- reactiveValues(data = NULL)
+  v <- reactiveValues(data = 0)
   
   observeEvent(input$act, {
     length(v$data) <- as.numeric(input$slide1)
@@ -23,16 +23,16 @@ shinyServer(function(input, output) {
   })
   
   output$sumvotes <- renderText({
-    if(sum(a()[,2])>1)
+    if(sum(a()[,2], na.rm = TRUE)>1)
     {
-      x <- paste0(100 * sum(a()[,2]), "%"
+      x <- paste0(100 * sum(a()[,2], na.rm = TRUE), "%"
                   , " Suma sondaży nie może przekraczać 100%")
     }
     else
     {
-      x <- paste0(100 * sum(a()[,2]), "%" 
+      x <- paste0(100 * sum(a()[,2], na.rm = TRUE), "%" 
                   , " procent głosów. Do rozdysponowania między partie: "
-                  , 100 * (1 - sum(a()[,2])), "%")
+                  , 100 * (1 - sum(a()[,2], na.rm = TRUE)), "%")
     }
   })
   
@@ -74,7 +74,7 @@ shinyServer(function(input, output) {
       x <- sounding2[1:length(sounding2)] * (1 - sum(sounding2))
       sounding2 <- sounding2[1:length(sounding2)] + x
     }
-    sounding2 <- rep(sounding2 * input$votes_count, times = 460)
+    sounding2 <- rep((sounding2 * 10000), times = 460)
     mat <- matrix(sounding2, ncol = input$slide1, byrow = TRUE)
     dfma <- as.data.frame(mat)
     divvec <- 1:460
