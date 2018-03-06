@@ -66,12 +66,16 @@ shinyServer(function(input, output) {
     sounding2 <- sounding
     if((1 - sum(sounding2)) > 0)
     {
-      x <- sounding2[1:length(sounding2)] * (1 - sum(sounding2))
+      sum1 <- sum(sounding2[1:length(sounding2)])
+      vec1 <- sounding2[1:length(sounding2)]/sum1
+      x <- vec1 * (1 - sum(sounding2))
       sounding2 <- sounding2[1:length(sounding2)] + x
     }
     else
     {
-      x <- sounding2[1:length(sounding2)] * (1 - sum(sounding2))
+      sum1 <- sum(sounding2[1:length(sounding2)])
+      vec1 <- sounding2[1:length(sounding2)]/sum1
+      x <- vec1 * (1 - sum(sounding2))
       sounding2 <- sounding2[1:length(sounding2)] + x
     }
     sounding2 <- rep((sounding2 * 10000), times = 460)
@@ -86,6 +90,13 @@ shinyServer(function(input, output) {
     tt <- table(tt)
     tt <- as.data.frame(tt)
     colnames(tt) <- c("Patria", "Liczba głosów")
-    return(tt)
+    if(sum(sounding) < 1)
+    {
+      return(tt)
+    }
+    else
+    {
+      return(data.frame("ERROR"))
+    }
   })
 })
