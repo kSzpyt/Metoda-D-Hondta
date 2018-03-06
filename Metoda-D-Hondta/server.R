@@ -90,7 +90,7 @@ shinyServer(function(input, output) {
     tt <- table(tt)
     tt <- as.data.frame(tt)
     colnames(tt) <- c("Patria", "Liczba głosów")
-    if(sum(sounding) < 1)
+    if(sum(v$data) < 1 | sum(v$data) == 1)
     {
       return(tt)
     }
