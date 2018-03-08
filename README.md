@@ -1,2 +1,2 @@
 # Metoda-D-Hondta
-takie tam coś 
+Aplikacja Shiny napisana na potrzeby przedmiotu: Informatyka Ekonomiczna.
