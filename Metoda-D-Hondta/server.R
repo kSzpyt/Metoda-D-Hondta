@@ -50,7 +50,7 @@ shinyServer(function(input, output) {
     })
     sounding[boolvec == F] <- 0#odrzucamy <0.05
     sounding <- v$data
-    sounding <- sapply(sounding, function(x) rnorm(1, x, 0.1*x))#uwzględniamy błąd
+    sounding <- sapply(sounding, function(x) rnorm(1, x, 0.06))#uwzględniamy błąd
     boolvec2 <- sapply(sounding, function(x){# true false aby odrzucić 
       if(x<0.05)#sondaże za małe
       {
