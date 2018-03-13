@@ -18,11 +18,18 @@ shinyServer(function(input, output) {
                "sondaż" = v$data)
   })
   
-  output$table1 <- renderTable({
-    a()
+  b <- reactive({
+    b <- cbind("patria" = 1:input$slide1,
+          "sondaż" = v$data)
+    b[,1] <- as.character(b[,1])
+    b
   })
   
-  output$sumvotes <- renderText({
+  output$table1 <- renderTable({b()})
+  output$table2 <- renderTable({b()})
+  output$table3 <- renderTable({b()})
+  
+  summary_votes <- reactive({
     if(sum(a()[,2], na.rm = TRUE)>1)
     {
       x <- paste0(100 * sum(a()[,2], na.rm = TRUE), "%"
@@ -36,7 +43,11 @@ shinyServer(function(input, output) {
     }
   })
   
-  output$votes <- renderTable({
+  output$sumvotes <- renderText({summary_votes()})
+  output$sumvotes2 <- renderText({summary_votes()})
+  output$sumvotes3 <- renderText({summary_votes()})
+  
+  dfma <- reactive({
     sounding <- v$data
     boolvec <- sapply(v$data, function(x){# true false aby odrzucić 
       if(x<0.05)#sondaże za małe
@@ -50,7 +61,7 @@ shinyServer(function(input, output) {
     })
     sounding[boolvec == F] <- 0#odrzucamy <0.05
     sounding <- v$data
-    sounding <- sapply(sounding, function(x) rnorm(1, x, 0.06))#uwzględniamy błąd
+    sounding <- sapply(sounding, function(x) rnorm(1, x, 0.02))#uwzględniamy błąd
     boolvec2 <- sapply(sounding, function(x){# true false aby odrzucić 
       if(x<0.05)#sondaże za małe
       {
@@ -81,8 +92,12 @@ shinyServer(function(input, output) {
     sounding2 <- rep((sounding2 * 10000), times = 460)
     mat <- matrix(sounding2, ncol = input$slide1, byrow = TRUE)
     dfma <- as.data.frame(mat)
+    return(dfma)#ramka danych
+  })
+  
+  votes_table <- reactive({
     divvec <- 1:460
-    dfma <- dfma/divvec
+    dfma <- dfma()/divvec
     o <- order(dfma, decreasing = TRUE)[1:460]
     inv <- c(1:input$slide1*460)
     tt <- findInterval(o, inv) + 1
@@ -99,4 +114,41 @@ shinyServer(function(input, output) {
       return(data.frame("ERROR"))
     }
   })
+  
+  votes_table2 <- reactive({
+    divvec <- seq(1, 460*2, by = 2)
+    dfma <- dfma()/divvec
+    o <- order(dfma, decreasing = TRUE)[1:460]
+    inv <- c(1:input$slide1*460)
+    tt <- findInterval(o, inv) + 1
+    #return(data.frame(sounding2, sounding[1:length(sounding)], 1-sum(sounding)))
+    tt <- table(tt)
+    tt <- as.data.frame(tt)
+    colnames(tt) <- c("Patria", "Liczba głosów")
+    if(sum(v$data) < 1 | sum(v$data) == 1)
+    {
+      return(tt)
+    }
+    else
+    {
+      return(data.frame("ERROR"))
+    }
+  })
+  
+  
+  output$votes <- renderTable({votes_table()})
+  
+  output$votes2 <- renderTable({votes_table2()})
+  
+  output$votes3 <- renderTable({votes_table()})
+  
+  output$votes4 <- renderTable({votes_table2()})
+  
+  
+  
+  
+  
+  
+  
+  
 })
