@@ -104,7 +104,7 @@ shinyServer(function(input, output) {
     #return(data.frame(sounding2, sounding[1:length(sounding)], 1-sum(sounding)))
     tt <- table(tt)
     tt <- as.data.frame(tt)
-    colnames(tt) <- c("Patria", "Liczba głosów")
+    colnames(tt) <- c("Patria", "Liczba mandatów")
     if(sum(v$data) < 1 | sum(v$data) == 1)
     {
       return(tt)
@@ -124,7 +124,8 @@ shinyServer(function(input, output) {
     #return(data.frame(sounding2, sounding[1:length(sounding)], 1-sum(sounding)))
     tt <- table(tt)
     tt <- as.data.frame(tt)
-    colnames(tt) <- c("Patria", "Liczba głosów")
+    colnames(tt) <- c("Patria", "Liczba mandatów
+                      ")
     if(sum(v$data) < 1 | sum(v$data) == 1)
     {
       return(tt)
